@@ -1,0 +1,23 @@
+{
+  "name": "section3-task",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rf-spuds/node-tasker.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rf-spuds/node-tasker/issues"
+  },
+  "homepage": "https://github.com/rf-spuds/node-tasker#readme",
+  "dependencies": {
+    "mongodb": "^3.6.2"
+  }
+}
