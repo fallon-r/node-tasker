@@ -19,6 +19,7 @@
   "homepage": "https://github.com/rf-spuds/node-tasker#readme",
   "dependencies": {
     "mongodb": "^3.6.2",
-    "mongoose": "^5.10.10"
+    "mongoose": "^5.10.10",
+    "validator": "^13.1.17"
   }
 }
