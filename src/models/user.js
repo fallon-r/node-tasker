@@ -1,7 +1,9 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken")
+const jwt = require("jsonwebtoken");
+
+const Task = require('./tasks')
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -41,12 +43,21 @@ const userSchema = new mongoose.Schema({
       }
     },
   },
-  tokens: [{
-    token : {
-      type: String,
-      required: true
-    }
-  }]
+  tokens: [
+    {
+      token: {
+        type: String,
+        required: true,
+      },
+    },
+  ],
+});
+
+// *Virtual Attribute
+userSchema.virtual("tasks", {
+  ref: "Task",
+  localField: "_id",
+  foreignField: "owner",
 });
 
 // * Auth Token
@@ -54,12 +65,14 @@ const userSchema = new mongoose.Schema({
 userSchema.methods.generateAuthToken = async function () {
   // * this = user
 
-  const token = await jwt.sign({_id: this._id.toString()}, 'aseriesofcharacters')
+  const token = await jwt.sign(
+    { _id: this._id.toString() },
+    "aseriesofcharacters"
+  );
 
-  this.tokens = this.tokens.concat({token})
-  await this.save()
-  return token
-
+  this.tokens = this.tokens.concat({ token });
+  await this.save();
+  return token;
 };
 
 // * Validates
@@ -87,22 +100,26 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
+// * Delete User and tasks
+userSchema.pre('remove', async function (next){
+  // ?this is user
+  await Task.deleteMany({owner: this._id})
+  next()
+})
+
+
 // * Public Profile
 
-userSchema.methods.toJSON = function (){
-// ?This is user
+userSchema.methods.toJSON = function () {
+  // ?This is user
 
-const userObject = this.toObject()
+  const userObject = this.toObject();
 
-delete userObject.password
-delete userObject.tokens
+  delete userObject.password;
+  delete userObject.tokens;
 
-
-return userObject
-
-
-}
-
+  return userObject;
+};
 
 const User = mongoose.model("User", userSchema);
 

@@ -100,7 +100,7 @@ router.patch("/users/me", auth, async (req, res) => {
   }
 });
 
-// ?Delete One
+// *Delete One
 router.delete("/users/me", auth, async (req, res) => {
   try {
     await req.user.remove();
