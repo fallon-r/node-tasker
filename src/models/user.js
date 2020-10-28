@@ -87,6 +87,23 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
+// * Public Profile
+
+userSchema.methods.toJSON = function (){
+// ?This is user
+
+const userObject = this.toObject()
+
+delete userObject.password
+delete userObject.tokens
+
+
+return userObject
+
+
+}
+
+
 const User = mongoose.model("User", userSchema);
 
 module.exports = User;
